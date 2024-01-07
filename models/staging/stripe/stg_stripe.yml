@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_payments
+    description: Stores the payment data related to orders placed by customers
+    columns:
+      - name: payment_id
+        description: The primary key for payments
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: The order_id related to the payment
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: payment_method
+        description: "{{ doc('payment_method') }}"
+        tests:
+          - accepted_values:
+              values:
+                - gift_card
+                - coupon
+                - bank_transfer
+                - credit_card
+      - name: status
+        description: "{{ doc('payment_status') }}"
+        tests:
+          - accepted_values:
+              values:
+                - success
+                - fail
+      - name: amount
+        description: The amount paid for placing the order
+          
